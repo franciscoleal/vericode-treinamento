@@ -1,9 +1,9 @@
-import view.InstanceView;
+import view.JogosView;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
 
-		new InstanceView();
+		new JogosView();
 //		new Media();
 	}
 }
