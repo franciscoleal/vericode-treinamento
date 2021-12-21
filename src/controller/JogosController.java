@@ -4,15 +4,15 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import model.InstanceModel;
+import model.JogosModel;
 
-public class InstanceControl {
+public class JogosController {
 	
 	private static Scanner entrada;
-	private static ArrayList<InstanceModel> valores = new ArrayList<InstanceModel>();
+	private static ArrayList<JogosModel> valores = new ArrayList<JogosModel>();
 	
 	
-	public ArrayList<InstanceModel> loader(String file){
+	public ArrayList<JogosModel> loader(String file){
 		
 		try {
 			
@@ -23,7 +23,7 @@ public class InstanceControl {
 			while(entrada.hasNext()) {
 				String[] data = entrada.nextLine().split(",");
 				
-				InstanceModel dados = new InstanceModel();
+				JogosModel dados = new JogosModel();
 		
 				dados.setRank(data[0]);
 				dados.setName(data[1]);
