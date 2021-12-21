@@ -6,17 +6,17 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.InstanceControl;
-import model.InstanceModel;
+import controller.JogosController;
+import model.JogosModel;
 
-public class InstanceView {
+public class JogosView {
 
 	public double globalSales;
 	public double somaGlobalSales;
-	public ArrayList<InstanceModel> valores;
+	public ArrayList<JogosModel> valores;
 	public double tam;
 
-	public InstanceView() throws Exception {
+	public JogosView() throws Exception {
 		
 		double desvioPadrao = 0.0; // desvio padrão
 		double media = 0.0; // media
@@ -26,15 +26,15 @@ public class InstanceView {
 		String text = "";
 		
 		
-		valores = new InstanceControl().loader("C:\\tmp\\saida\\vgsales.csv");
+		valores = new JogosController().loader("C:\\tmp\\saida\\vgsales.csv");
 		
-		PrintWriter s = new PrintWriter(new File("C:\\tmp\\saida\\nomes.txt"));
+		PrintWriter s = new PrintWriter(new File("nomesDosJogos.txt"));
 		
 		tam = valores.size();
 		
 		System.out.println("Quantidade de Registros: " + tam);
 		
-		for (InstanceModel n : valores) {
+		for (JogosModel n : valores) {
 			somaGlobalSales += n.getGlobalSales();
 			globalSales = n.getGlobalSales();
 			lista.add(n.getGlobalSales());
@@ -63,7 +63,7 @@ public class InstanceView {
 		
 		
 		
-		for (InstanceModel valor : valores) {
+		for (JogosModel valor : valores) {
 			text = valor.getYear().replaceAll("[^0-9.]", "");	
 			if(text.length() == 4) {
 				int jogosLancadosAposAno = 2000;
