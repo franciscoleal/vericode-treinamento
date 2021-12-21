@@ -52,7 +52,7 @@ public class JogosView {
 		
 		//desvio
 		for (double listaD : lista) {
-			desvioPadrao = desvioPadrao + Math.pow(listaD - media, 2);
+			desvioPadrao += Math.pow(listaD - media, 2);
 		}
 		
 		System.out.println("Desvio Padrão Amostral: " + NumberFormat
