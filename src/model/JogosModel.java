@@ -1,6 +1,6 @@
 package model;
 
-public class InstanceModel {
+public class JogosModel {
 	
 	private String rank;
 	private String name;
