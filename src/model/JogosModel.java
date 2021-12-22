@@ -2,6 +2,7 @@ package model;
 
 public class JogosModel {
 	
+//	atributos
 	private String rank;
 	private String name;
 	private String platform;
@@ -13,7 +14,8 @@ public class JogosModel {
 	private String jpSales;
 	private String otherSales;
 	private Double globalSales;
-
+	
+//	getters e setters
 	public String getName() {
 		return name;
 	}
@@ -43,7 +45,7 @@ public class JogosModel {
 		this.rank = rank;
 	}
 	
-	
+//  metodo que sobrescreve a classe mae para que possa apresentar os dados de forma legivel ao inves do pacote e do hashcode
 	@Override
 	public String toString() {
 		return "InstanceModel [rank=" + rank + ", name=" + name + ", platform=" + platform + ", year=" + year
