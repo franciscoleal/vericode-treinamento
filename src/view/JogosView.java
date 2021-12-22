@@ -6,77 +6,97 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.JogosController;
+import controller.JogosControl;
 import model.JogosModel;
 
 public class JogosView {
-
-	public double globalSales;
+	
 	public double somaGlobalSales;
 	public ArrayList<JogosModel> valores;
-	public double tam;
+	public double totalDeRegistros;
 
 	public JogosView() throws Exception {
 		
 		double desvioPadrao = 0.0; // desvio padrão
-		double media = 0.0; // media
-		List<Double> lista = new ArrayList<>();
-//		List<String> listAno = new ArrayList<>();
-		int listInt = 0;
-		String text = "";
+		double CalcularMedia = 0.0; // media
+		List<Double> lista = new ArrayList<>(); // recebe valor da coluna globalSales
+		int listInt = 0; // recebe o parse da lista de string dos anos
+		String retiraTudoQueEString = ""; // regex que tira tudo que é string
 		
 		
-		valores = new JogosController().loader("C:\\tmp\\saida\\vgsales.csv");
+//		passo o path do arquivo que será lido pelo metodo loader da classe JogosControl
+		valores = new JogosControl().loader("C:\\tmp\\saida\\vgsales.csv");
+	
+//		faço a escrita no arquivo com os nomes dos jogos acima do ano 2000 e acima de 2 milhões
+		PrintWriter salvaNomesNoTxt = new PrintWriter(new File("nomesDosJogos.txt"));
 		
-		PrintWriter s = new PrintWriter(new File("nomesDosJogos.txt"));
+//		recupero o total de registros
+		totalDeRegistros = valores.size();
 		
-		tam = valores.size();
-		
-		System.out.println("Quantidade de Registros: " + tam);
-		
-		for (JogosModel n : valores) {
-			somaGlobalSales += n.getGlobalSales();
-			globalSales = n.getGlobalSales();
-			lista.add(n.getGlobalSales());
+//		imprimo a quantidade de registros
+		System.out.println("Quantidade de Registros: " + NumberFormat
+											.getIntegerInstance()
+											.format(totalDeRegistros) );
+
+
+		for (JogosModel valor : valores) {
+//			somatório da coluna globalSales	
+			somaGlobalSales += valor.getGlobalSales();
+//			adiciono a list os valores da coluna globalSales para efetuar o calculo do desvio padrão
+			lista.add(valor.getGlobalSales());
+			
+			
+			
+			
+//			fiz um regex para tirar tudo que era String
+			retiraTudoQueEString = valor.getYear().replaceAll("[^0-9.]", "");	
+//			faço uma verificação se tudo que sobrou iguala aos anos
+			if(retiraTudoQueEString.length() == 4) {
+//				crio a variavel para verificar os jogos após o ano 2000
+				int jogosLancadosAposAno = 2000;
+//				faço um parse da lista de anos de string para integer
+				listInt =  Integer.parseInt(retiraTudoQueEString);
+//				comparo se o ano é acima do ano 2000 e se é acima de 2 milhões
+				if (listInt > jogosLancadosAposAno && valor.getGlobalSales() > 2f ) {
+//					System.out.println(valor.getName() + " : " + valor.getGlobalSales());
+//					System.out.println(" Acima de 2 milhões após o ano 2000: " + valor.getName());
+
+//					salvo os nomes no txt - 643 registros no total
+					salvaNomesNoTxt.println(valor.getName());
+				}
+				
+			}
 		}
 		
+		
+//		imprime o total da coluna globalSales
 		System.out.println("Total GlobalSales: " + NumberFormat
 							.getIntegerInstance()
 							.format(somaGlobalSales * 1000000));
 		
-		//media
-		media = (somaGlobalSales / tam);
+		// calcula a media 
+		CalcularMedia = (somaGlobalSales / totalDeRegistros);
 		System.out.println("Media: " + NumberFormat
 								.getIntegerInstance()
-								.format(media * 1000000));
+								.format(CalcularMedia * 1000000));
 		
-		//desvio
+		
+//		calcula o desvio padrão amostral
 		for (double listaD : lista) {
-			desvioPadrao += Math.pow(listaD - media, 2);
+			desvioPadrao += Math.pow(listaD - CalcularMedia, 2);
 		}
-		
+//		imprime o desvio padrão
+//		divide-se o somatório pela quantidade de elementos do conjunto
 		System.out.println("Desvio Padrão Amostral: " + NumberFormat
 														.getIntegerInstance()
-	    												.format(Math.sqrt(desvioPadrao / tam) * 1000000));
-		
-		System.out.println();
+	    												.format(Math.sqrt(desvioPadrao / totalDeRegistros) * 1000000));
 		
 		
 		
-		for (JogosModel valor : valores) {
-			text = valor.getYear().replaceAll("[^0-9.]", "");	
-			if(text.length() == 4) {
-				int jogosLancadosAposAno = 2000;
-				listInt =  Integer.parseInt(text);
-				if (listInt > jogosLancadosAposAno && valor.getGlobalSales() > 2f ) {
-//					System.out.println(valor.getName() + " : " + valor.getGlobalSales());
-//					System.out.println(" Acima de 2 milhões após o ano 2000: " + valor.getName());	
-					s.println(valor.getName());
-				}
-				
-			}
-		}	
-		s.close();
+		
+		
+//		fecho o printStream
+		salvaNomesNoTxt.close();
 	}
 	
 }
